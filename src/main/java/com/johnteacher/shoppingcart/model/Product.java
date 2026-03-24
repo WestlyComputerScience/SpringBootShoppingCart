@@ -31,6 +31,7 @@ public class Product {
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     // When product deleted, then all information related to the product will be deleted (i.e. all it's photos are deleted too)
