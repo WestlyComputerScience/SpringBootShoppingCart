@@ -26,6 +26,7 @@ public class Image {
     private String fileType;
 
     @Lob // Specifies that this property/field should be stored in the database as a large object
+    @Column(name = "multimedia_data")
     private Blob blob; // Blob = Binary Large Object (aka it stores images, audio files, videos, PDFs, etc.)
 
     private String downloadUrl;
