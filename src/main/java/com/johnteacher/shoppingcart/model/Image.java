@@ -27,12 +27,11 @@ public class Image {
 
     @Lob // Specifies that this property/field should be stored in the database as a large object
     @Column(name = "multimedia_data")
-    private Blob blob; // Blob = Binary Large Object (aka it stores images, audio files, videos, PDFs, etc.)
+    private Blob image; // Blob = Binary Large Object (aka it stores images, audio files, videos, PDFs, etc.)
 
     private String downloadUrl;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product products;
-
+    private Product product;
 }
