@@ -1,4 +1,4 @@
-package com.johnteacher.shoppingcart.dtio;
+package com.johnteacher.shoppingcart.dto;
 
 import lombok.Data;
 

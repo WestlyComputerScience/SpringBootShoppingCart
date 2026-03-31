@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Extras ###
+src/main/resources/application-secret-two.properties
+
 ### STS ###
 .apt_generated
 .classpath

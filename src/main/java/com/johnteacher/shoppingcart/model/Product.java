@@ -34,7 +34,7 @@ public class Product {
     private Category category;
 
     // When product deleted, then all information related to the product will be deleted (i.e. all it's photos are deleted too)
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
     public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {

@@ -1,6 +1,6 @@
 package com.johnteacher.shoppingcart.service.image;
 
-import com.johnteacher.shoppingcart.dtio.ImageDto;
+import com.johnteacher.shoppingcart.dto.ImageDto;
 import com.johnteacher.shoppingcart.exceptions.ResourceNotFoundException;
 import com.johnteacher.shoppingcart.model.Image;
 import com.johnteacher.shoppingcart.model.Product;

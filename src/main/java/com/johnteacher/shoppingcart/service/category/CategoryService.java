@@ -1,14 +1,12 @@
 package com.johnteacher.shoppingcart.service.category;
 
 import com.johnteacher.shoppingcart.exceptions.AlreadyExistsException;
-import com.johnteacher.shoppingcart.exceptions.ProductNotFoundException;
 import com.johnteacher.shoppingcart.exceptions.ResourceNotFoundException;
 import com.johnteacher.shoppingcart.model.Category;
 import com.johnteacher.shoppingcart.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.FileSystemAlreadyExistsException;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +47,7 @@ public class CategoryService implements ICategoryService{
     }
 
     @Override
-    public void deleteCategory(Long id) {
+    public void deleteCategoryById(Long id) {
         categoryRepository.findById(id).ifPresentOrElse(categoryRepository::delete, () -> {
             throw new ResourceNotFoundException("Category Not Found");
         });

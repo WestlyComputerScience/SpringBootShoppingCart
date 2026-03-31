@@ -1,6 +1,6 @@
 package com.johnteacher.shoppingcart.controller;
 
-import com.johnteacher.shoppingcart.dtio.ImageDto;
+import com.johnteacher.shoppingcart.dto.ImageDto;
 import com.johnteacher.shoppingcart.exceptions.ResourceNotFoundException;
 import com.johnteacher.shoppingcart.model.Image;
 import com.johnteacher.shoppingcart.response.ApiResponse;
@@ -64,5 +64,19 @@ public class ImageController {
         @RequestBody = Converts JSON Body to Java Object
         @PathVariable = extracts values from the URL path
      */
+
+    @DeleteMapping("image/{imageId}/delete") // delete existing resources
+    public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId) {
+        try {
+            Image image = imageService.getImageById(imageId);
+            if (image != null) {
+                imageService.deleteImageById(imageId);
+                return ResponseEntity.ok(new ApiResponse("Delete Success!", image));
+            }
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Delete Failed", INTERNAL_SERVER_ERROR));
+    }
 
 }

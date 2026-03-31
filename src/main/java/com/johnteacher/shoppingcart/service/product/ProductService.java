@@ -1,6 +1,6 @@
 package com.johnteacher.shoppingcart.service.product;
 
-import com.johnteacher.shoppingcart.exceptions.ProductNotFoundException;
+import com.johnteacher.shoppingcart.exceptions.ResourceNotFoundException;
 import com.johnteacher.shoppingcart.model.Category;
 import com.johnteacher.shoppingcart.model.Product;
 import com.johnteacher.shoppingcart.repository.CategoryRepository;
@@ -51,14 +51,14 @@ public class ProductService implements IProductService{
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
     }
 
     @Override
     public void deleteProductById(Long id) {
         productRepository.findById(id)
                 .ifPresentOrElse(productRepository::delete,
-                        () -> {throw new ProductNotFoundException("Product Not Found");});
+                        () -> {throw new ResourceNotFoundException("Product Not Found");});
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ProductService implements IProductService{
         return productRepository.findById(productId) // returns Optional<Product>
                 .map(existingProduct -> updateExistingProduct(existingProduct, request)) // copies fields from request to existingProduct
                 .map(productRepository::save) // shorthand for .map(product -> productRepository.save(product)
-                .orElseThrow(() -> new ProductNotFoundException("Product Not Found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found!"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
