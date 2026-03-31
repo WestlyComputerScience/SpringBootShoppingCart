@@ -21,7 +21,7 @@ public class Category {
     private Long id;
     private String name;
 
-    @JsonIgnore // ignores this in postman
+    @JsonIgnore // ignores this in postman to break the loop (when we call category, don't call the product since it's calling you)
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 

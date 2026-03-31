@@ -1,19 +1,21 @@
 package com.johnteacher.shoppingcart.service.product;
 
+import com.johnteacher.shoppingcart.dto.ImageDto;
+import com.johnteacher.shoppingcart.dto.ProductDto;
 import com.johnteacher.shoppingcart.exceptions.ResourceNotFoundException;
 import com.johnteacher.shoppingcart.model.Category;
+import com.johnteacher.shoppingcart.model.Image;
 import com.johnteacher.shoppingcart.model.Product;
 import com.johnteacher.shoppingcart.repository.CategoryRepository;
+import com.johnteacher.shoppingcart.repository.ImageRepository;
 import com.johnteacher.shoppingcart.repository.ProductRepository;
 import com.johnteacher.shoppingcart.request.AddProductRequest;
 import com.johnteacher.shoppingcart.request.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.data.util.ClassUtils.ifPresent;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,8 @@ public class ProductService implements IProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
+    private final ModelMapper modelMapper;
 
     private Product createProduct(AddProductRequest request, Category category) {
         return new Product(
@@ -115,5 +119,22 @@ public class ProductService implements IProductService{
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
+    }
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+        return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    // Since product doesn't contain an images field, we need to talk with the images sphere to grab the necessary info
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class); // converts the product to a product DTO
+        List<Image> images = imageRepository.findByProductId(product.getId()); // get images by product id
+        List<ImageDto> imageDtos = images.stream()  // convert images to a Dto list
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos); // set the images for our product DTO
+        return productDto;
     }
 }

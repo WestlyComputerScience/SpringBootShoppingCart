@@ -1,5 +1,6 @@
 package com.johnteacher.shoppingcart.service.product;
 
+import com.johnteacher.shoppingcart.dto.ProductDto;
 import com.johnteacher.shoppingcart.model.Product;
 import com.johnteacher.shoppingcart.request.AddProductRequest;
 import com.johnteacher.shoppingcart.request.ProductUpdateRequest;
@@ -18,4 +19,6 @@ public interface IProductService {
     List<Product> getProductsByName(String name);
     List<Product> getProductsByBrandAndName(String brand, String name);
     Long countProductsByBrandAndName(String brand, String name);
+    public List<ProductDto> getConvertedProducts(List<Product> products);
+    public ProductDto convertToDto(Product product);
 }
