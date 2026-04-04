@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service // also makes this class a spring bean
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class CartService implements ICartService{
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
         BigDecimal totalAmount = cart.getTotalAmount();
         cart.setTotalAmount(totalAmount); // sets the cart to the new total amount
-        return cartRepository.save(cart);
+        return cart;
     }
 
     @Override
@@ -41,5 +42,11 @@ public class CartService implements ICartService{
 //                .map(CartItem::getTotalPrice)
 //                .reduce(BigDecimal.ZERO, BigDecimal::add); // accumulate all total cart prices
         return cart.getTotalAmount(); // same as above
+    }
+
+    @Override
+    public Long initializeNewCart() {
+        Cart newCart = new Cart();
+        return cartRepository.save(newCart).getId();
     }
 }

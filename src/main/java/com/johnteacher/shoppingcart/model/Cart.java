@@ -1,6 +1,7 @@
 package com.johnteacher.shoppingcart.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -25,7 +27,8 @@ public class Cart {
     // Cascade.All = when cart deleted, so are all the cart items
     // orphanRemoval for if there's a cart item not referenced by a cart will be deleted too
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartItem> cartItems;
+    @JsonManagedReference
+    private Set<CartItem> cartItems = new HashSet<>();
 
     public void addItem(CartItem cartItem) {
         this.cartItems.add(cartItem);

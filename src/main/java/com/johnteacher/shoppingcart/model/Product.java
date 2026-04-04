@@ -1,5 +1,6 @@
 package com.johnteacher.shoppingcart.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +36,7 @@ public class Product {
 
     // When product deleted, then all information related to the product will be deleted (i.e. all it's photos are deleted too)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Image> images;
 
     public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
