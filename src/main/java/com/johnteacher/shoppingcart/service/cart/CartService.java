@@ -4,6 +4,7 @@ import com.johnteacher.shoppingcart.exceptions.ResourceNotFoundException;
 import com.johnteacher.shoppingcart.model.Cart;
 import com.johnteacher.shoppingcart.repository.CartItemRepository;
 import com.johnteacher.shoppingcart.repository.CartRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service // also makes this class a spring bean
 @RequiredArgsConstructor
-public class CartService implements ICartService{
+public class CartService implements ICartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 
@@ -25,6 +26,7 @@ public class CartService implements ICartService{
         return cart;
     }
 
+    @Transactional // either everything in the method happens, or nothing does
     @Override
     public void clearCart(Long id) {
         Cart cart = getCart(id);
@@ -48,5 +50,11 @@ public class CartService implements ICartService{
     public Long initializeNewCart() {
         Cart newCart = new Cart();
         return cartRepository.save(newCart).getId();
+    }
+
+    @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
     }
 }
