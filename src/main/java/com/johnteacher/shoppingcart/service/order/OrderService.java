@@ -85,7 +85,8 @@ public class OrderService implements IOrderService {
         return orders.stream().map(this :: convertToDto).toList(); // "::" means "for each order, convertToDto(order)"
     }
 
-    private OrderDto convertToDto(Order order) {
+    @Override
+    public OrderDto convertToDto(Order order) {
         return modelMapper.map(order, OrderDto.class);
     }
 

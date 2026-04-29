@@ -1,5 +1,6 @@
 package com.johnteacher.shoppingcart.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.johnteacher.shoppingcart.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
