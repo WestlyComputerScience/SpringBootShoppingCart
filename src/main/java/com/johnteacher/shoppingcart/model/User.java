@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Getter
@@ -28,8 +30,11 @@ public class User {
     @JsonIgnore
     private Cart cart;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> order;
 
+    // not safe for Cascade.ALL (aka anything happening to user, all orders
+    @ManyToMany(fetch = FetchType.EAGER, cascade =
+            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Collection<Role> roles = new HashSet<>();
 }

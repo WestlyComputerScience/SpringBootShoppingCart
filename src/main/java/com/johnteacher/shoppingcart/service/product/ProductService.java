@@ -2,6 +2,7 @@ package com.johnteacher.shoppingcart.service.product;
 
 import com.johnteacher.shoppingcart.dto.ImageDto;
 import com.johnteacher.shoppingcart.dto.ProductDto;
+import com.johnteacher.shoppingcart.exceptions.AlreadyExistsException;
 import com.johnteacher.shoppingcart.exceptions.ResourceNotFoundException;
 import com.johnteacher.shoppingcart.model.Category;
 import com.johnteacher.shoppingcart.model.Image;
@@ -37,12 +38,21 @@ public class ProductService implements IProductService{
         );
     }
 
+    private boolean productExists(String name, String brand) {
+        return productRepository.existsByNameAndBrand(name, brand);
+    }
+
     @Override
     public Product addProduct(AddProductRequest request) {
         // check if the category is found in the DB
         // If yes, then set it as the new product category
         // If no, then save it as a new category
         // Then set it as the new product category.
+
+        if (productExists(request.getName(), request.getBrand())) {
+            throw new AlreadyExistsException(request.getBrand() + " " + request.getName() + " already exists, you may update this product instead!");
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());

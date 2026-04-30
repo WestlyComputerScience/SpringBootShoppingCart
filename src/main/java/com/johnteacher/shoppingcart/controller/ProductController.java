@@ -2,6 +2,7 @@ package com.johnteacher.shoppingcart.controller;
 
 
 import com.johnteacher.shoppingcart.dto.ProductDto;
+import com.johnteacher.shoppingcart.exceptions.AlreadyExistsException;
 import com.johnteacher.shoppingcart.exceptions.ResourceNotFoundException;
 import com.johnteacher.shoppingcart.model.Product;
 import com.johnteacher.shoppingcart.request.AddProductRequest;
@@ -14,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController // aka every method returns a data (JSON) and not a view (HTML page)
@@ -47,8 +47,8 @@ public class ProductController {
         try {
             Product theProduct = productService.addProduct(product);
             return ResponseEntity.ok(new ApiResponse("Add product success!", theProduct));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        } catch (AlreadyExistsException e) {
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         }
     }
 
